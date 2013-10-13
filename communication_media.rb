@@ -1,5 +1,5 @@
 class CommunicationMedia
-  attr_reader :alpha, :beta, :a, :b, :p
+  attr_reader :p, :alpha, :beta
 
   def initialize(p, a, b)
     @p = p
@@ -14,8 +14,8 @@ class CommunicationMedia
   end
 
   def count_previous_message_for(m, k)
-    for i in 1..(@p)
-      return i if m == (i ** k) % @p
+    for i in 1..@p
+      return i if m == ((i ** k) % @p)
     end
   end
 
@@ -41,7 +41,8 @@ class CommunicationMedia
   private
   def additional_param_for(num)
     for i in 1..(@p-1)
-      return i if (num*i)%(@p-1) == 1
+      return i if (num*i > @p-1) && (num*i)%(@p-1) == 1
     end
+    0
   end
 end
