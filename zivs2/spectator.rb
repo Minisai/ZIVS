@@ -8,24 +8,23 @@ class Spectator
   end
 
   def hack
+    keys_amount = 0
+
     for a in 1..@p
       for b in 1..@p
         test_media = CommunicationMedia.new(@p, a, b)
-        m1 = test_media.count_previous_message_for(@message, b)
-        m = test_media.count_previous_message_for(m1, a)
-        m3 = test_media.count_next_message_for(@message, test_media.alpha)
-        m4 = test_media.count_next_message_for(m3, test_media.beta)
+        messages = test_media.calculate_messages_for(@message, @number)
 
-        if m == m4
-          puts 'SUCCESS'
-          test_media.make_test_with(m)
+        if messages[0] == messages[4]
+          puts '!!!KEYS FOUND!!!'
+          keys_amount += 1
+          test_media.make_test_with(messages[0])
           puts 'type anything to continue'
           gets
         end
       end
     end
 
-    puts 'FAIL'
-    false
+    puts "Search is completed. Found #{keys_amount} keys"
   end
 end

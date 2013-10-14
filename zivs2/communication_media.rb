@@ -20,22 +20,39 @@ class CommunicationMedia
   end
 
   def make_test_with(m)
-    puts "p: #{@p}"
-    puts "a: #{@a}"
-    puts "b: #{@b}"
-    puts "alpha: #{@alpha}"
-    puts "beta: #{@beta}"
+    puts 'Initial data:'
+    puts "p: #{@p}, a: #{@a}, b: #{@b}, alpha: #{@alpha}, beta: #{@beta}"
 
-    m1 = count_next_message_for(17, @a)
-    m2 = count_next_message_for(m1, @b)
-    m3 = count_next_message_for(m2, @alpha)
-    m4 = count_next_message_for(m3, @beta)
+    messages = calculate_messages_for(m)
 
-    puts "M: #{m}"
-    puts "M1: #{m1}"
-    puts "M2: #{m2}"
-    puts "M3: #{m3}"
-    puts "M4: #{m4}"
+    puts "Messages:"
+    puts messages.join(' -> ')
+  end
+
+  def calculate_messages_for(m, number=0)
+    case number
+      when 0
+        m0 = m
+        m1 = count_next_message_for(m, @a)
+        m2 = count_next_message_for(m1, @b)
+        m3 = count_next_message_for(m2, @alpha)
+        m4 = count_next_message_for(m3, @beta)
+      when 2
+        m2 = m
+        m1 = count_previous_message_for(m, @b)
+        m0 = count_previous_message_for(m1, @a)
+        m3 = count_next_message_for(m, @alpha)
+        m4 = count_next_message_for(m3, @beta)
+      when 3
+        m3 = m
+        m2 = count_previous_message_for(m3, @alpha)
+        m1 = count_previous_message_for(m2, @b)
+        m0 = count_previous_message_for(m1, @a)
+        m4 = count_next_message_for(m3, @beta)
+      else
+        raise 'Invalid message number. Only 0, 2, 3 are allowed.'
+    end
+    [m0, m1, m2, m3, m4]
   end
 
   private
