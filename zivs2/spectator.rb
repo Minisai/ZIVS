@@ -10,8 +10,8 @@ class Spectator
   def hack
     keys_amount = 0
 
-    for a in 1..@p
-      for b in 1..@p
+    for a in 1...(@p-1)
+      for b in 1...(@p-1)
         test_media = CommunicationMedia.new(@p, a, b)
         messages = test_media.calculate_messages_for(@message, @number)
 
